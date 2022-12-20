@@ -8,5 +8,6 @@ edition = "2021"
 [workspace]
 members = [ 
     "part-00-start", 
-    "part-01-update"
+    "part-01-update",
+    "part-02-sound"
 ]
