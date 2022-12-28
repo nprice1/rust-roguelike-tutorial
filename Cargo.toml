@@ -9,5 +9,6 @@ edition = "2021"
 members = [ 
     "part-00-start", 
     "part-01-update",
-    "part-02-sound"
+    "part-02-sound",
+    "part-03-gui"
 ]
