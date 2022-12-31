@@ -1,0 +1,41 @@
+use super::{get_item_color, get_item_display_name, item_result_menu};
+use crate::rltk;
+use crate::{InBackpack, State};
+use specs::prelude::*;
+
+#[derive(PartialEq, Copy, Clone)]
+pub enum ItemMenuResult {
+    Cancel,
+    NoResponse,
+    Selected,
+    NextPage,
+    PreviousPage,
+}
+
+pub fn show_inventory(
+    gs: &mut State,
+    ctx: &mut rltk::BTerm,
+    page: usize,
+) -> (ItemMenuResult, Option<Entity>) {
+    let player_entity = gs.ecs.fetch::<Entity>();
+    let backpack = gs.ecs.read_storage::<InBackpack>();
+    let entities = gs.ecs.entities();
+
+    let mut draw_batch = rltk::DrawBatch::new();
+
+    let mut items: Vec<(Entity, String, rltk::RGB)> = Vec::new();
+    (&entities, &backpack)
+        .join()
+        .filter(|item| item.1.owner == *player_entity)
+        .for_each(|item| {
+            items.push((
+                item.0,
+                get_item_display_name(&gs.ecs, item.0),
+                get_item_color(&gs.ecs, item.0),
+            ))
+        });
+
+    let result = item_result_menu(&mut draw_batch, "Inventory", &items, ctx.key, page);
+    draw_batch.submit(6000).expect("Failed to submit");
+    result
+}
