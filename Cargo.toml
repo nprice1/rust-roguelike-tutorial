@@ -11,5 +11,6 @@ members = [
     "part-01-update",
     "part-02-sound",
     "part-03-gui",
-    "part-04-options"
+    "part-04-options",
+    "part-05-stealing"
 ]
